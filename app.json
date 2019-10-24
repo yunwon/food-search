@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "restuarant-search",
-    "slug": "restuarant-search",
+    "name": "food-search",
+    "slug": "food-search",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
