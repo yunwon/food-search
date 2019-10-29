@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, TextInput, Image, View, StyleSheet } from "react-native";
 import RestaurantList from "../components/RestaurantList";
+import SearchBar from "../components/SearchBar";
+import yelp from "../api/Yelp";
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
+  const [term, setTerm] = useState("");
+  const [results, setResults] = useState([]);
+
+  const searchApi = async () => {
+    const response = await yelp.get("/search", {
+      params: {
+        limit: 50,
+        term: term,
+        location: "auckland"
+      }
+    });
+    setResults(response.data.businesses);
+  };
+
   return (
     <View style={styles.container}>
-      <TextInput style={styles.input} placeholder="Search" />
+      <SearchBar term={term} onTermChange={setTerm} onTermSubmit={searchApi} />
+      <Text>{results.length} restaurants found </Text>
       <RestaurantList cost="Cost Effective" />
       <RestaurantList cost="Bit Pricer" />
       <RestaurantList cost="Big Spender!" />
@@ -19,7 +36,7 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 6,
-    backgroundColor: "#e6e6e6",
+    backgroundColor: "#f0EEEE",
     borderRadius: 4
   }
 });

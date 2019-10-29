@@ -11,7 +11,7 @@ const navigator = createStackNavigator(
   {
     initialRouteName: "Search",
     defaultNavigationOptions: {
-      title: "Business Search"
+      title: "Where do you want to eat today?"
     }
   }
 );
