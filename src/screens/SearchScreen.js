@@ -1,44 +1,52 @@
-import React, { useState } from "react";
-import { Text, TextInput, Image, View, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet } from "react-native";
 import RestaurantList from "../components/RestaurantList";
 import SearchBar from "../components/SearchBar";
-import yelp from "../api/Yelp";
+import useResults from "../hooks/useResults";
+import { ScrollView } from "react-native-gesture-handler";
 
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = () => {
   const [term, setTerm] = useState("");
-  const [results, setResults] = useState([]);
-  const [errorMessage, seterrorMessage] = useState("");
+  const [searchApi, results, errorMessage] = useResults();
 
-  const searchApi = async () => {
-    try {
-      const response = await yelp.get("/search", {
-        params: {
-          limit: 50,
-          term: term,
-          location: "auckland"
-        }
-      });
-      setResults(response.data.businesses);
-    } catch (err) {
-      seterrorMessage("Something went wrong 😢");
-    }
+  const filterResultsByPrice = price => {
+    return results.filter(result => {
+      return result.price === price;
+    });
   };
 
   return (
-    <View style={styles.container}>
-      <SearchBar term={term} onTermChange={setTerm} onTermSubmit={searchApi} />
+    <>
+      <SearchBar
+        term={term}
+        onTermChange={setTerm}
+        onTermSubmit={() => searchApi(term)}
+      />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
       <Text>{results.length} restaurants found </Text>
-      <RestaurantList cost="Cost Effective" />
-      <RestaurantList cost="Bit Pricer" />
-      <RestaurantList cost="Big Spender!" />
-    </View>
+      <Text>{term}</Text>
+      <ScrollView>
+        <RestaurantList
+          results={filterResultsByPrice("$")}
+          cost="Cost Effective"
+        />
+        <RestaurantList
+          results={filterResultsByPrice("$$")}
+          cost="Bit Pricer"
+        />
+        <RestaurantList
+          results={filterResultsByPrice("$$$")}
+          cost="Big Spender!"
+        />
+      </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10
+    margin: 10,
+    flex: 1
   },
   input: {
     padding: 6,

@@ -1,31 +1,31 @@
 import React from "react";
 import { Text, Image, View, StyleSheet, ScrollView } from "react-native";
 import Restaurant from "./Restaurant";
+import { FlatList } from "react-native-gesture-handler";
 
-const RestaurantList = ({ cost }) => {
+const RestaurantList = ({ cost, results }) => {
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.header}>
         {cost}
       </Text>
-      <ScrollView horizontal={true}>
-        <Restaurant
-          imageSource={require("../../assets/beach.jpg")}
-          name="Fish City"
-          ratings={4.5}
-          reviews={489}
-        />
-        <Restaurant
-          imageSource={require("../../assets/mountain.jpg")}
-          name="Shit City"
-          ratings={4.5}
-          reviews={489}
-        />
-        <Restaurant
-          imageSource={require("../../assets/forest.jpg")}
-          name="Foodieeee"
-          ratings={4.5}
-          reviews={489}
+      <ScrollView>
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={results}
+          keyExtractor={result => result.id}
+          renderItem={({ item }) => {
+            console.log(item.image_url);
+            return (
+              <Restaurant
+                imageSource={{ uri: item.image_url }}
+                name={item.name}
+                ratings={item.rating}
+                reviews={item.review_count}
+              />
+            );
+          }}
         />
       </ScrollView>
     </View>
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
+    fontWeight: "bold",
     marginBottom: 10
   }
 });

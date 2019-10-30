@@ -5,7 +5,7 @@ const Restaurant = ({ name, imageSource, ratings, reviews }) => {
   return (
     <View style={styles.container}>
       <Image source={imageSource} style={styles.image} />
-      <Text>{name}</Text>
+      <Text style={styles.name}>{name}</Text>
       <Text style={styles.text}>
         {ratings} Stars, {reviews} Reviews
       </Text>
@@ -18,10 +18,16 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   image: {
-    marginBottom: 10
+    marginBottom: 10,
+    height: 150,
+    width: 280,
+    borderRadius: 4
   },
   text: {
     color: "#777777"
+  },
+  name: {
+    fontWeight: "bold"
   }
 });
 
