@@ -16,15 +16,13 @@ const SearchScreen = () => {
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <SearchBar
         term={term}
         onTermChange={setTerm}
         onTermSubmit={() => searchApi(term)}
       />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
-      <Text>{results.length} restaurants found </Text>
-      <Text>{term}</Text>
       <ScrollView>
         <RestaurantList
           results={filterResultsByPrice("$")}
@@ -39,7 +37,7 @@ const SearchScreen = () => {
           cost="Big Spender!"
         />
       </ScrollView>
-    </>
+    </View>
   );
 };
 

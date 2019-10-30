@@ -1,9 +1,20 @@
 import React from "react";
-import { Text, Image, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
+import { withNavigation } from "react-navigation";
 import Restaurant from "./Restaurant";
 import { FlatList } from "react-native-gesture-handler";
 
-const RestaurantList = ({ cost, results }) => {
+const RestaurantList = ({ cost, results, navigation }) => {
+  if (!results.length) {
+    return null;
+  }
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.header}>
@@ -16,14 +27,17 @@ const RestaurantList = ({ cost, results }) => {
           data={results}
           keyExtractor={result => result.id}
           renderItem={({ item }) => {
-            console.log(item.image_url);
             return (
-              <Restaurant
-                imageSource={{ uri: item.image_url }}
-                name={item.name}
-                ratings={item.rating}
-                reviews={item.review_count}
-              />
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Detail", { id: item.id })}
+              >
+                <Restaurant
+                  imageSource={{ uri: item.image_url }}
+                  name={item.name}
+                  ratings={item.rating}
+                  reviews={item.review_count}
+                />
+              </TouchableOpacity>
             );
           }}
         />
@@ -46,4 +60,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RestaurantList;
+export default withNavigation(RestaurantList);
