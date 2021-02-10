@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, FlatList, StyleSheet } from "react-native";
-import yelp from "../api/yelp";
+import yelp from "../api/Yelp";
 
 const DetailScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
